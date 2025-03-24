@@ -1,0 +1,46 @@
+chat:
+  initial_system_prompt : 
+    name_level_1: 
+      Initial system prompt to give persona to the model 
+    prompt: |
+      ""
+
+tools:
+  name_level_1:
+    List of tools available to the Action manager agent
+  available_tools: |
+    [Product Info, Alternate Product]
+
+query_manager:
+  intent_classifier:
+    name_level_1:
+      Prompt to classify the intent of the user's query
+    prompt: |
+      """
+      Classify the intent of this query: {query}
+      Possible intents: {tools}
+      """
+  reformat_query:  
+    name_level_1:
+      Prompt to restructure the query   
+    prompt: |
+      """You are an expert furniture sales person, who can gauge customer's requirement from whatever questions they are asking regarding a product.
+        Identify the core concern of the user's query about {product_id}:
+        What exactly the user is looking for and restructure the query accordingly.
+        {user_query}
+        Respond only with restructured query clearly mentioning what to look for in the vectordb.
+      """
+
+validate_response:
+  validator:
+    name_level_1:
+      Prompt to validate the response in accordance with user_query
+    prompt: |
+      """
+      Determine if the given response is relevant to the user's query.
+      
+      Query: {query}
+      Response: {response}
+      
+      Answer only with "yes" or "no".
+      """
