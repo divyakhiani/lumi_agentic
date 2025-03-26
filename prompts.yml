@@ -17,13 +17,76 @@ query_manager:
       Prompt to classify the intent of the user's query
     prompt: |
       """
+      ### **Prompt:**  
+      You are a {persona} for a {business}, embedded on particular root product (root product is delimited by triple backticks) description page - '''{root_product}'''. 
+      Root Product description is as below delimited by triple tilde 
+      ~~~{product_description}~~~
+
+      If it is not clear which product is being referred to, and the query is regarding a product then assume the product to be root product
+
+      Your job is {purpose} based on:  
+      1. The current root product
+      2. The current Root product description 
+      3. The **current query**  
+      4. The **ongoing chat history**  
+      5. The **potential sales opportunity**  
+
+      Your goal is to derive the most appropriate intent from the predefined categories:  
+      {predefined_intents}
+
+      ### **Instructions:**  
+      {instructions}
+
+      ### **Examples:**  
+      {examples}
+
+      ### **Final Task:**  
+      Now, given the following customer query and chat history, determine the **Intent** using the same reasoning.  
+
+      **Query:** {user_query}  
+      **Chat History:** {chat_history}  
+      
+      Provide the response in JSON format as:
+        {{
+          "thought": "...",
+          "intent": "..."
+        }}
+
+      """
+    
+    dep_prompt: |
+      """
       Classify the intent of this query: {query}
       Possible intents: {tools}
+      Examples 
       """
+
   reformat_query:  
     name_level_1:
       Prompt to restructure the query   
     prompt: |
+      """
+      You are an AI assistant that refines user queries to make them more precise and structured. 
+
+      ### **Input Data:**  
+      - **Thought:** {thought}  
+      - **Intent:** {intent}  
+      - **User Query:** {user_query}  
+      - **Root Product:** {root_product}  
+
+      ### **Task:**  
+      Based on the thought process and intent, **reformat the user query** to be **clearer and more complete** by including the product name where applicable.
+
+      ### **Guidelines:**  
+      1. If the query is generic (e.g., "What is the warranty period?"), **make it product-specific** (e.g., "What is the warranty period for the {root_product}?").  
+      2. If the query already contains the product name, keep it as is but **rephrase for clarity if needed**.  
+      3. Maintain the original intent of the query without adding new information.  
+      4. Keep the response concise and natural.  
+
+      **Output only the reformatted query**  
+      """ 
+
+    dep_prompt: |
       """You are an expert furniture sales person, who can gauge customer's requirement from whatever questions they are asking regarding a product.
         Identify the core concern of the user's query about {product_id}:
         What exactly the user is looking for and restructure the query accordingly.

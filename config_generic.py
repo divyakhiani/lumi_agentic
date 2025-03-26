@@ -119,8 +119,8 @@ class GenericConfig:
         # endregion
 
         # region FILES PRODUCTS AND REVIEWS
-        self.file_name_products = os.path.join(self.dir_op, "nilkamal/nilkamal_products_data.csv")
-        self.file_name_reviews = os.path.join(self.dir_op, "nilkamal/nilkamal_customer_reviews.csv")
+        self.file_name_products = os.path.join(self.dir_ip, "nilkamal/nilkamal_products_data.csv")
+        self.file_name_reviews = os.path.join(self.dir_ip, "nilkamal/nilkamal_customer_reviews.csv")
         # endregion
 
         # region DECLARE ADDITIONAL CONFIGURATION FOR ENVIRONMENTS
